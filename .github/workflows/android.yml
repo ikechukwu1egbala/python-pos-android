@@ -19,6 +19,7 @@ jobs:
           python3-pip \
           openjdk-17-jdk \
           unzip zip \
+          pkg-config \
           libffi-dev \
           libssl-dev \
           libbz2-dev \
@@ -30,9 +31,10 @@ jobs:
           libreadline-dev \
           llvm \
           clang
-          
+    
         pip install --upgrade pip
         pip install buildozer cython virtualenv
+    
 
     - name: Accept Android SDK licenses
       run: |
