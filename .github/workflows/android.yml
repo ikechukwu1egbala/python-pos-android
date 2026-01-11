@@ -60,9 +60,9 @@ jobs:
         ANDROID_NDK_HOME: /home/runner/.buildozer/android/platform/android-ndk-r25b
         ANDROID_NDK_ROOT: /home/runner/.buildozer/android/platform/android-ndk-r25b
       run: |
-        buildozer android debug
-
-    - name: Upload APK
+        buildozer -v android debug
+    
+    - name: Upload APP 
       uses: actions/upload-artifact@v4
       with:
         name: python-pos-apk
