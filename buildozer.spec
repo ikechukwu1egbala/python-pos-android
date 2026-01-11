@@ -7,7 +7,9 @@ source.include_exts = py
 version = 0.1
 
 android.accept_sdk_license = True
-android.skip_update = False
+
+android.sdk = 33
+android.build_tools_version = 33.0.2
 
 requirements = python3,kivy,fastapi,uvicorn,sqlalchemy,requests,pydantic
 
