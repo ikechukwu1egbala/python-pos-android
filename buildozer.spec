@@ -6,8 +6,8 @@ source.dir = .
 source.include_exts = py
 version = 0.1
 
+android.ndk = 25b
 android.accept_sdk_license = True
-
 android.sdk = 33
 android.build_tools_version = 33.0.2
 
@@ -22,6 +22,5 @@ android.minapi = 21
 
 [buildozer]
 log_level = 2
-
 
 
