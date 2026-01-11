@@ -48,6 +48,11 @@ jobs:
       run: |
         buildozer -v android python3
 
+    - name: Clean python-for-android cache
+      run: |
+        rm -rf ~/.buildozer/android/platform/python-for-android
+        buildozer android clean || true
+
     - name: Build APK
       env:
         ANDROID_HOME: /home/runner/.buildozer/android/platform/android-sdk
