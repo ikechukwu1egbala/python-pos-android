@@ -6,6 +6,9 @@ source.dir = .
 source.include_exts = py
 version = 0.1
 
+android.accept_sdk_license = True
+android.skip_update = False
+
 requirements = python3,kivy,fastapi,uvicorn,sqlalchemy,requests,pydantic
 
 orientation = landscape
@@ -17,3 +20,6 @@ android.minapi = 21
 
 [buildozer]
 log_level = 2
+
+
+
