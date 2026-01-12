@@ -38,9 +38,12 @@ jobs:
         mkdir -p $HOME/android-sdk/cmdline-tools
         cd $HOME/android-sdk
         wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-        unzip commandlinetools-linux-*.zip
-        mv cmdline-tools latest
-        mv latest cmdline-tools/
+        unzip commandlinetools-linux-11076708_latest.zip
+        rm commandlinetools-linux-11076708_latest.zip
+        mv cmdline-tools cmdline-tools-tmp
+        mkdir -p cmdline-tools/latest
+        mv cmdline-tools-tmp/* cmdline-tools/latest/
+
 
     - name: Set Android SDK env
       run: |
