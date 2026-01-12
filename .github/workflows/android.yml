@@ -6,7 +6,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+
 
     steps:
       - name: Checkout code
@@ -48,6 +49,12 @@ jobs:
       - name: Hard clean buildozer
         run: |
           rm -rf ~/.buildozer
+          
+      - name: Remove buildozer + p4a cache
+        run: |
+          rm -rf ~/.buildozer
+          rm -rf ~/.cache/python-for-android
+
 
       - name: Build APK
         env:
