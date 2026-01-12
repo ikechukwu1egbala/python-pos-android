@@ -41,11 +41,7 @@ jobs:
             libxslt1-dev \
             llvm \
             clang
-
-    pip install --upgrade pip
-    pip install buildozer cython virtualenv
-
-      
+            
           pip install --upgrade pip
           pip install buildozer cython virtualenv
 
