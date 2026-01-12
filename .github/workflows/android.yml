@@ -30,10 +30,10 @@ jobs:
             libncursesw5-dev \
             libreadline-dev \
             llvm \
-            clang
             libxml2-dev \
             libxslt1-dev \
-
+            clang
+            
           pip install --upgrade pip
           pip install buildozer cython virtualenv
 
