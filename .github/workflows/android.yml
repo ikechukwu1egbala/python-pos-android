@@ -26,6 +26,8 @@ jobs:
             libtool \
             libtool-bin \
             m4 \
+            gettext \
+            autopoint \
             libffi-dev \
             libssl-dev \
             libbz2-dev \
@@ -39,6 +41,10 @@ jobs:
             libxslt1-dev \
             llvm \
             clang
+
+    pip install --upgrade pip
+    pip install buildozer cython virtualenv
+
       
           pip install --upgrade pip
           pip install buildozer cython virtualenv
