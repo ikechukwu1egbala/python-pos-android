@@ -6,17 +6,13 @@ source.dir = .
 source.include_exts = py
 version = 0.1
 
-requirements = python3==3.10.13,kivy==2.3.0,pyjnius,sqlalchemy,requests,pydantic
-
-android.archs = arm64-v8a
-android.api = 33
-android.minapi = 21
-android.ndk = 25b
-android.accept_sdk_license = True
+requirements = python3==3.10.13,kivy==2.3.0,pyjnius==1.5.0,sqlalchemy,requests,pydantic
 
 orientation = landscape
 fullscreen = 1
 android.permissions = INTERNET
+android.api = 33
+android.minapi = 21
 
 [buildozer]
 log_level = 2
