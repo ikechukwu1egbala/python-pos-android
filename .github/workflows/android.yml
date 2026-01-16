@@ -1,127 +1,103 @@
-name: Build Android APK
-
-on:
-  push:
-    branches: [ "main" ]
-
-jobs:
-  build:
-    runs-on: ubuntu-22.04
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Install system dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y \
-          python3-pip \
-          openjdk-17-jdk \
-          unzip zip \
-          pkg-config \
-          libffi-dev \
-          libssl-dev \
-          zlib1g-dev \
-          libsqlite3-dev \
-          libncurses5-dev \
-          libncursesw5-dev \
-          libreadline-dev \
-          libbz2-dev \
-          liblzma-dev \
-          llvm \
-          clang
-
-    # ---------- ANDROID SDK SETUP ----------
-    - name: Install Android cmdline-tools
-      run: |
-        mkdir -p $HOME/android-sdk/cmdline-tools
-        cd $HOME/android-sdk
-        wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-        unzip commandlinetools-linux-11076708_latest.zip
-        rm commandlinetools-linux-11076708_latest.zip
-        mv cmdline-tools cmdline-tools-tmp
-        mkdir -p cmdline-tools/latest
-        mv cmdline-tools-tmp/* cmdline-tools/latest/
-
-
-    - name: Set Android SDK env
-      run: |
-        echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
-        echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
-        echo "$HOME/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
-    
-    - name: Force Java 17
-      run: |
-        echo "JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64" >> $GITHUB_ENV
-        echo "/usr/lib/jvm/temurin-17-jdk-amd64/bin" >> $GITHUB_PATH
-
-    - name: Verify sdkmanager
-      run: |
-        echo $PATH
-        ls $ANDROID_HOME/cmdline-tools/latest/bin
-        which sdkmanager
-        sdkmanager --version
-
-
-    - name: Accept Android SDK licenses
-      run: |
-        yes | sdkmanager --licenses
-
-    - name: Install Android SDK
-      run: |
-        mkdir -p $HOME/android-sdk/cmdline-tools
-        cd $HOME/android-sdk
-    
-        curl -o cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-        unzip cmdline-tools.zip -d cmdline-tools
-        mv cmdline-tools/cmdline-tools cmdline-tools/latest
-    
-        echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
-        echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
-        echo "$HOME/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
-
-
-    - name: Install Android SDK packages
-      run: |
-        sdkmanager \
-          "platform-tools" \
-          "platforms;android-33" \
-          "build-tools;33.0.2" \
-          "ndk;25.2.9519653"
-          
-        yes | /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
-
-    - name: Configure Buildozer SDK paths
-      run: |
-        echo "ANDROIDSDK=$ANDROID_HOME" >> $GITHUB_ENV
-        echo "ANDROIDNDK=$ANDROID_HOME/ndk/25.2.9519653" >> $GITHUB_ENV
-
-
-    # ---------- PYTHON TOOLCHAIN ----------
-    - name: Force correct Cython
-      run: |
-        pip uninstall -y cython || true
-        pip install "cython<3"
-
-    - name: Install Buildozer
-      run: |
-        pip install --upgrade pip
-        pip install buildozer virtualenv
-
-    # ---------- HARD CLEAN ----------
-    - name: Hard clean buildozer
-      run: |
-        rm -rf ~/.buildozer
-        rm -rf ~/.cache/python-for-android
-
-    # ---------- BUILD ----------
-    - name: Build APK
-      run: |
-        buildozer -v android debug
-
-    - name: Upload APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: python-pos-apk
-        path: bin/*.apk
+      name: Build Android APK
+      
+      on:
+        push:
+          branches: [ "main" ]
+      
+      jobs:
+        build:
+          runs-on: ubuntu-latest
+      
+          steps:
+          # 1️⃣ Checkout
+          - name: Checkout code
+            uses: actions/checkout@v4
+      
+          # 2️⃣ Force Java 17 (VERY IMPORTANT)
+          - name: Force Java 17
+            run: |
+              echo "JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64" >> $GITHUB_ENV
+              echo "/usr/lib/jvm/temurin-17-jdk-amd64/bin" >> $GITHUB_PATH
+      
+          # 3️⃣ Install system dependencies
+          - name: Install system dependencies
+            run: |
+              sudo apt update
+              sudo apt install -y \
+                python3-pip \
+                openjdk-17-jdk \
+                unzip zip \
+                pkg-config \
+                libffi-dev \
+                libssl-dev \
+                libbz2-dev \
+                liblzma-dev \
+                zlib1g-dev \
+                libsqlite3-dev \
+                libncurses5-dev \
+                libncursesw5-dev \
+                libreadline-dev \
+                libxml2-dev \
+                llvm \
+                clang
+      
+          # 4️⃣ Fix Cython (jnius error fix)
+          - name: Force compatible Cython
+            run: |
+              pip uninstall -y cython || true
+              pip install "cython<3"
+      
+          # 5️⃣ Install buildozer + tools
+          - name: Install Python tools
+            run: |
+              pip install --upgrade pip
+              pip install buildozer virtualenv
+      
+          # 6️⃣ Install Android command-line tools
+          - name: Install Android SDK tools
+            run: |
+              mkdir -p $HOME/android-sdk/cmdline-tools
+              cd $HOME/android-sdk
+              curl -o cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+              unzip cmdline-tools.zip -d cmdline-tools
+              mv cmdline-tools/cmdline-tools cmdline-tools/latest
+      
+          # 7️⃣ Set Android environment variables
+          - name: Set Android environment
+            run: |
+              echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
+              echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
+              echo "$HOME/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
+      
+          # 8️⃣ Accept ALL SDK licenses (CRITICAL)
+          - name: Accept Android SDK licenses
+            run: |
+              yes | sdkmanager --licenses
+      
+          # 9️⃣ Install ONLY required Android packages (NO 36.x)
+          - name: Install required Android packages
+            run: |
+              sdkmanager \
+                "platform-tools" \
+                "platforms;android-33" \
+                "build-tools;33.0.2" \
+                "ndk;25.2.9519653"
+      
+          # 🔟 HARD clean (prevents cached corruption)
+          - name: Hard clean build caches
+            run: |
+              rm -rf ~/.buildozer
+              rm -rf ~/.android
+              rm -rf ~/.cache/python-for-android
+      
+          # 1️⃣1️⃣ Build APK
+          - name: Build APK
+            run: |
+              buildozer -v android debug
+      
+          # 1️⃣2️⃣ Upload APK
+          - name: Upload APK
+            uses: actions/upload-artifact@v4
+            with:
+              name: python-pos-apk
+              path: bin/*.apk
