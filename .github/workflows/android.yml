@@ -32,10 +32,20 @@ jobs:
         wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
         unzip commandlinetools-linux-11076708_latest.zip
         mv cmdline-tools latest
-
-    - name: Accept Android SDK licenses
+        
+    - name: Accept Android Licenses
       run: |
-        yes | sdkmanager --licenses
+        mkdir -p "$ANDROID_HOME/licenses"
+        echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
+        echo -e "\n84831b9409ad46a298be015b3b194d25087a32d6" >> "$ANDROID_HOME/licenses/android-sdk-license"
+        echo -e "\n504667f4c0879e0708304260f852e23652c54117" >> "$ANDROID_HOME/licenses/android-sdk-license"
+
+
+   # - name: Accept Android SDK licenses
+    #  run: |
+   #     yes | sdkmanager --licenses
+
+     
 
     - name: Install Android SDK packages (AIDL FIX)
       run: |
