@@ -40,6 +40,15 @@ jobs:
       run: yes | sdkmanager --licenses
 
 
+
+    - name: Verify sdkmanager
+      run: |
+       echo $PATH
+        ls $ANDROID_HOME/cmdline-tools/latest/bin
+        which sdkmanager
+        sdkmanager --version
+
+
    # - name: Accept Android SDK licenses
     #  run: |
    #     yes | sdkmanager --licenses
