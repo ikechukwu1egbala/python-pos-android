@@ -33,6 +33,12 @@ jobs:
         unzip commandlinetools-linux-11076708_latest.zip
         mv cmdline-tools latest
 
+    - name: Accept Android licenses
+      run: |
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
+        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;36.1.0" "platform-tools" "tools" "aidl"
+    
+
     - name: Accept Android SDK licenses
       run: |
         yes | sdkmanager --licenses
