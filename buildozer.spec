@@ -18,7 +18,10 @@ android.minapi = 21
 
 android.ndk = 25b
 android.build_tools_version = 33.0.2
+
+# 🔥 CRITICAL PATH FIXES
 android.sdk_path = /home/runner/android-sdk
+android.sdkmanager_path = /home/runner/android-sdk/cmdline-tools/latest/bin/sdkmanager
 
 bootstrap = sdl2
 
