@@ -82,12 +82,35 @@ jobs:
         sdkmanager --list || true
 
 
+
+    - name: Verify SDK + AIDL + sdkmanager
+      run: |
+        echo "SDK ROOT:"
+        ls -l /home/runner/android-sdk
+    
+        echo "Build tools:"
+        ls -l /home/runner/android-sdk/build-tools || true
+        ls -l /home/runner/android-sdk/build-tools/33.0.2 || true
+    
+        echo "AIDL:"
+        ls -l /home/runner/android-sdk/build-tools/33.0.2/aidl || true
+    
+        echo "sdkmanager:"
+        ls -l /home/runner/android-sdk/tools/bin/sdkmanager || true
+        ls -l /home/runner/android-sdk/cmdline-tools/latest/bin/sdkmanager || true
+    
+        echo "Java:"
+        java -version
+
+
+
     # ---------------- BUILD ----------------
-    - name: Build APK
+    - name: Build APK (FULL DEBUG)
       env:
         ANDROID_HOME: /home/runner/android-sdk
         ANDROID_SDK_ROOT: /home/runner/android-sdk
       run: |
+        buildozer android clean
         buildozer -v android debug --log-level=2
 
     # ---------------- UPLOAD ----------------
