@@ -65,12 +65,7 @@ jobs:
         pip uninstall -y cython || true
         pip install "cython<3"
 
-    # ---------------- CLEAN ----------------
-    - name: Hard clean buildozer cache
-      run: |
-        rm -rf ~/.buildozer
-        rm -rf ~/.cache/python-for-android
-
+   
     - name: DEBUG Android SDK contents
       run: |
         echo "ANDROID_HOME=$ANDROID_HOME"
@@ -105,13 +100,14 @@ jobs:
 
 
     # ---------------- BUILD ----------------
-    - name: Build APK (FULL DEBUG)
+    - name: Build APK
       env:
         ANDROID_HOME: /home/runner/android-sdk
         ANDROID_SDK_ROOT: /home/runner/android-sdk
       run: |
         buildozer android clean
         buildozer -v android debug --log-level=2
+
 
     # ---------------- UPLOAD ----------------
     - name: Upload APK
