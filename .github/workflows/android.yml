@@ -32,28 +32,10 @@ jobs:
         wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
         unzip commandlinetools-linux-11076708_latest.zip
         mv cmdline-tools latest
-        
 
-    - name: Set up Android SDK
-      uses: android-actions/setup-android@v2
     - name: Accept Android SDK licenses
-      run: yes | sdkmanager --licenses
-
-
-
-    - name: Verify sdkmanager
       run: |
-       echo $PATH
-        ls $ANDROID_HOME/cmdline-tools/latest/bin
-        which sdkmanager
-        sdkmanager --version
-
-
-   # - name: Accept Android SDK licenses
-    #  run: |
-   #     yes | sdkmanager --licenses
-
-     
+        yes | sdkmanager --licenses
 
     - name: Install Android SDK packages (AIDL FIX)
       run: |
