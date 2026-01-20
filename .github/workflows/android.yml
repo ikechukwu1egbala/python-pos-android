@@ -59,13 +59,24 @@ jobs:
         rm -rf ~/.buildozer
         rm -rf ~/.cache/python-for-android
 
+    - name: DEBUG Android SDK contents
+      run: |
+        echo "ANDROID_HOME=$ANDROID_HOME"
+        echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+        ls -R $ANDROID_HOME || true
+        which aidl || true
+        find $ANDROID_HOME -name aidl || true
+        java -version
+        sdkmanager --list || true
+
+
     # ---------------- BUILD ----------------
     - name: Build APK
       env:
         ANDROID_HOME: /home/runner/android-sdk
         ANDROID_SDK_ROOT: /home/runner/android-sdk
       run: |
-        buildozer -v android debug
+        buildozer -v android debug --log-level=2
 
     # ---------------- UPLOAD ----------------
     - name: Upload APK
