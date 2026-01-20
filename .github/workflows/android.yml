@@ -32,12 +32,11 @@ jobs:
         wget https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
         unzip commandlinetools-linux-11076708_latest.zip
         mv cmdline-tools latest
+        
+    -  name: Dump environment variables 
+       run: env | grep ANDROID
 
-    - name: Accept Android licenses
-      run: |
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
-        yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;36.1.0" "platform-tools" "tools" "aidl"
-    
+
 
     - name: Accept Android SDK licenses
       run: |
