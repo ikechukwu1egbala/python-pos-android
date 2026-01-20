@@ -100,13 +100,20 @@ jobs:
 
 
     # ---------------- BUILD ----------------
+    - name: Initialize Buildozer platform
+      env:
+        ANDROID_HOME: /home/runner/android-sdk
+        ANDROID_SDK_ROOT: /home/runner/android-sdk
+      run: |
+        buildozer android update
+    
     - name: Build APK
       env:
         ANDROID_HOME: /home/runner/android-sdk
         ANDROID_SDK_ROOT: /home/runner/android-sdk
       run: |
-        buildozer android clean
         buildozer -v android debug --log-level=2
+
 
 
     # ---------------- UPLOAD ----------------
